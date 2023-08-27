@@ -5,7 +5,8 @@ import {
   Form,
   Button,
   Card,
-  Row
+  Row,
+  Alert
 } from 'react-bootstrap';
 import { useMutation } from '@apollo/client';
 import Auth from '../utils/auth';
@@ -20,6 +21,8 @@ const SearchBooks = () => {
   // create state for holding our search field data
   const [searchInput, setSearchInput] = useState('');
   const [saveBook] = useMutation(SAVE_BOOK);
+  const [show, setShow] = useState(false);
+
 
   // create state to hold saved bookId values
   const [savedBookIds, setSavedBookIds] = useState(getSavedBookIds());
@@ -53,6 +56,7 @@ const SearchBooks = () => {
         title: book.volumeInfo.title,
         description: book.volumeInfo.description,
         image: book.volumeInfo.imageLinks?.thumbnail || '',
+        link: book.volumeInfo.infoLink,
       }));
 
       setSearchedBooks(bookData);
@@ -61,6 +65,15 @@ const SearchBooks = () => {
       console.error(err);
     }
   };
+
+  const handleAlert = () => {
+    if (show) {
+      return (
+        <Alert key="primary" onClose={() => setShow(false)} variant="primary" dismissible>
+          <Alert.Heading>Book was saved! </Alert.Heading>
+        </Alert>)
+    }
+  }
 
   // create function to handle saving a book to our database
   const handleSaveBook = async (bookId) => {
@@ -75,10 +88,11 @@ const SearchBooks = () => {
     }
 
     try {
-      const response = await saveBook({
+      await saveBook({
         variables: { bookData: bookToSave },
       });
 
+      setShow(true);
       // if book successfully saves to user's account, save book id to state
       setSavedBookIds([...savedBookIds, bookToSave.bookId]);
     } catch (err) {
@@ -119,6 +133,7 @@ const SearchBooks = () => {
             ? `Viewing ${searchedBooks.length} results:`
             : 'Search for a book to begin'}
         </h2>
+        {handleAlert()}
         <Row>
           {searchedBooks.map((book) => {
             return (
@@ -131,6 +146,7 @@ const SearchBooks = () => {
                     <Card.Title>{book.title}</Card.Title>
                     <p className='small'>Authors: {book.authors}</p>
                     <Card.Text>{book.description}</Card.Text>
+                    <Button variant="link" href={book.link} target='_blank'>Link</Button>
                     {Auth.loggedIn() && (
                       <Button
                         disabled={savedBookIds?.some((savedBookId) => savedBookId === book.bookId)}
