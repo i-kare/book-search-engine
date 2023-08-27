@@ -32,6 +32,14 @@
 - WHEN I click on the Logout button
 - THEN I am logged out of the site and presented with a menu with the options Search for Books and Login/Signup and an input field to search for books and a submit button  
 
+## How to run locally
+1. npm install
+2. npm run build
+3. brew services start mongodb || brew services start mongodb-community
+4. npm run develop
+5. go to localhost:3000/
+
 ## Deployed Page URL
 
 ## Screenshot
+
