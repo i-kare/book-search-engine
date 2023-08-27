@@ -7,7 +7,6 @@ const db = require('./config/connection');
 
 // Import the two parts of a GraphQL schema
 const { typeDefs, resolvers } = require('./schemas');
-const { type } = require('os');
 
 const server = new ApolloServer({ //creating a new apollo server
   typeDefs,
