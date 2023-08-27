@@ -20,6 +20,15 @@ const typeDefs = gql`
     link: String
   }
 
+  input BookInput {
+    bookId: ID!,
+    authors: [String],
+    description: String,
+    title: String!,
+    image: String,
+    link: String
+  }
+
   # Set up an Auth type to handle returning data from a user's login or signup
   type Auth {
     token: ID!
