@@ -43,15 +43,19 @@ const resolvers = {
 
         // create a user, sign a token, and send it back (to client/src/components/SignUpForm.js)
         addUser: async (user, { username, email, password }) => {
-            const newUser = await User.create({ username, email, password });
+            try {
+                const newUser = await User.create({ username, email, password });
 
-            if (!newUser) {
-                throw new AuthenticationError('Something went wrong with user creation!');
+                if (!newUser) {
+                    throw new AuthenticationError('Something went wrong with user creation!');
+                }
+    
+                const token = signToken(newUser);
+    
+                return { token, newUser };
+            } catch(err) {
+                console.log(err);
             }
-
-            const token = signToken(newUser);
-
-            return { token, newUser };
         },
 
         // save a book to a user's `savedBooks` field by adding it to the set (to prevent duplicates)
