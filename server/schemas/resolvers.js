@@ -6,9 +6,7 @@ const resolvers = {
     Query: {
         me: async (user, args, context) => {
             if (context.user) {
-                const userData = await User.findOne({ _id: context.user._id })
-                    .select('-__v -password')
-                    .populate('books');
+                const userData = await User.findOne({ _id: context.user._id }).select('-__v -password');
 
                 if (!userData) {
                     throw new AuthenticationError("Couldn't find user with this id!");
