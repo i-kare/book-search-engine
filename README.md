@@ -40,6 +40,12 @@
 5. go to localhost:3000/
 
 ## Deployed Page URL
+https://google-book-search-react-gql-2630c0563f4c.herokuapp.com/
 
 ## Screenshot
+### Saved Books 
+![Saved Books](./screenshots/saved_books.png)
+
+### Searched Books
+![Searched Books](./screenshots/search_books.png)
 
